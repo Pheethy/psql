@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	helperModel "git.innovasive.co.th/backend/models"
+	helperModel "github.com/Pheethy/psql/helper"
 	"github.com/Pheethy/psql"
 	"github.com/Pheethy/psql/orm"
 	"github.com/Pheethy/sqlx"

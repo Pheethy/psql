@@ -3,8 +3,6 @@ module github.com/Pheethy/psql
 go 1.21.3
 
 require (
-	git.innovasive.co.th/backend/models v1.1.0
-	git.innovasive.co.th/backend/psql v1.4.7
 	github.com/Pheethy/sqlx v0.0.0-20231210055214-27a66acd90b2
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/structs v1.1.0

@@ -1,0 +1,131 @@
+[
+    {
+        "id": "9ead7068-95ed-4d13-b620-0b0f7d285c16",
+        "type": "donut",
+        "name": "Cake",
+        "ppu": 0.55,
+        "status": 1,
+        "enable": true,
+        "order_date": "2023-06-01",
+        "chef": {
+            "id": "7971c074-210f-46f3-a2d3-8db5a2916272",
+            "name": "Kintara"
+        },
+        "batters": [
+            {
+                "id": "1001",
+                "type": "Regular"
+            },
+            {
+                "id": "1002",
+                "type": "Chocolate"
+            },
+            {
+                "id": "1003",
+                "type": "Blueberry"
+            },
+            {
+                "id": "1004",
+                "type": "Devil's Food"
+            }
+        ],
+        "toppings": [
+            {
+                "id": 5001,
+                "type": "None"
+            },
+            {
+                "id": 5002,
+                "type": "Glazed"
+            },
+            {
+                "id": 5005,
+                "type": "Sugar"
+            },
+            {
+                "id": 5007,
+                "type": "Powdered Sugar"
+            },
+            {
+                "id": 5006,
+                "type": "Chocolate with Sprinkles"
+            },
+            {
+                "id": 5003,
+                "type": "Chocolate"
+            },
+            {
+                "id": 5004,
+                "type": "Maple"
+            }
+        ],
+        "created_at": "2023-06-01 01:23:53",
+        "total": 100
+    },
+    {
+        "id": "5a75928c-c682-4906-82c1-82ace5f52dff",
+        "type": "donut",
+        "name": "Raised",
+        "ppu": 0.55,
+        "status": 2,
+        "enable": true,
+        "order_date": "2023-06-01",
+        "batters": [
+            {
+                "id": "1001",
+                "type": "Regular"
+            }
+        ],
+        "chef": {
+            "id": "65c7dd37-89fd-4f8c-aedb-1d86e8f072b5",
+            "name": "Factory"
+        },
+        "toppings": [
+            {
+                "id": 5001,
+                "type": "None"
+            },
+            {
+                "id": 5002,
+                "type": "Glazed"
+            },
+            {
+                "id": 5005,
+                "type": "Sugar"
+            },
+            {
+                "id": 5003,
+                "type": "Chocolate"
+            },
+            {
+                "id": 5004,
+                "type": "Maple"
+            }
+        ],
+        "created_at": "2023-06-01 01:23:53",
+        "total": 15
+    },
+    {
+        "id": "10d7012e-9b59-4b80-acb0-63bf05bc5457",
+        "type": "donut",
+        "name": "Old Fashioned",
+        "ppu": 0.55,
+        "status": 1,
+        "enable": true,
+        "order_date": "2023-06-01",
+        "chef": null,
+        "batters": [
+            {
+                "id": "1001",
+                "type": "Regular"
+            },
+            {
+                "id": "1002",
+                "type": "Chocolate"
+            }
+        ],
+        "toppings": [],
+        "created_at": "2023-06-01 01:23:53",
+        "total": 40
+    }
+]
