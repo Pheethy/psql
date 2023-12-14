@@ -10,6 +10,13 @@ import (
 	"github.com/gofrs/uuid"
 )
 
+func GetENV(key string, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
+}
+
 func ValidateKeyExists(keys []string, params map[string]interface{}) map[string]error {
 	if len(keys) == 0 || params == nil {
 		return nil
