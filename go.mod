@@ -9,7 +9,6 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/getsentry/sentry-go v0.27.0
 	github.com/globalsign/mgo v0.0.0-20180718154654-64f7b0527e1a
-	github.com/go-resty/resty/v2 v2.13.1
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
 	github.com/guregu/null v4.0.0+incompatible
@@ -19,6 +18,7 @@ require (
 	github.com/qustavo/sqlhooks/v2 v2.1.0
 	github.com/spf13/cast v1.6.0
 	github.com/stretchr/testify v1.8.4
+	go.mongodb.org/mongo-driver v1.15.0
 	golang.org/x/sync v0.6.0
 	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.33.0
