@@ -20,20 +20,21 @@ type Registry interface {
 }
 
 var GlobalRegistry = map[string]Registry{
-	(uid{}).TypeName():                              uid{},
-	(str("")).TypeName():                            str(""),
-	(zerouid{}).TypeName():                          zerouid{},
-	(integer(0)).TypeName():                         (integer(0)),
-	(integer64(0)).TypeName():                       (integer64(0)),
-	(floater32(float32(0))).TypeName():              (floater32(0)),
-	(floater64(float64(0))).TypeName():              (floater64(0)),
+	(uid{}).TypeName():                         uid{},
+	(guid{}).TypeName():                        guid{},
+	(str("")).TypeName():                       str(""),
+	(zerouid{}).TypeName():                     zerouid{},
+	(integer(0)).TypeName():                    (integer(0)),
+	(integer64(0)).TypeName():                  (integer64(0)),
+	(floater32(float32(0))).TypeName():         (floater32(0)),
+	(floater64(float64(0))).TypeName():         (floater64(0)),
 	(timestamp(helper.Timestamp{})).TypeName(): timestamp(helper.Timestamp{}),
 	(date(helper.Date{})).TypeName():           date(helper.Date{}),
-	(zeroString(zeroString{})).TypeName():           zeroString(zero.String{}),
-	(zeroInt(zero.Int{})).TypeName():                zeroInt(zero.Int{}),
-	(zeroFloat(zero.Float{})).TypeName():            zeroFloat(zero.Float{}),
-	(zeroBool(zero.Bool{})).TypeName():              zeroBool(zero.Bool{}),
-	(boolean(true)).TypeName():                      (boolean(true)),
+	(zeroString(zeroString{})).TypeName():      zeroString(zero.String{}),
+	(zeroInt(zero.Int{})).TypeName():           zeroInt(zero.Int{}),
+	(zeroFloat(zero.Float{})).TypeName():       zeroFloat(zero.Float{}),
+	(zeroBool(zero.Bool{})).TypeName():         zeroBool(zero.Bool{}),
+	(boolean(true)).TypeName():                 (boolean(true)),
 }
 
 /*
@@ -69,6 +70,44 @@ func (elem uid) Bind(field *structs.Field, val interface{}) error {
 }
 
 func (elem uid) Equal(x interface{}, y interface{}) bool {
+	if x == nil || y == nil {
+		return false
+	}
+	return x.(*uuid.UUID).String() == y.(*uuid.UUID).String()
+}
+
+/*
+----------------------------------------
+|
+|   GUID
+|
+----------------------------------------
+*/
+type guid uuid.UUID
+
+func (elem guid) TypeName() string {
+	return "uniqueidentifier"
+}
+
+func (elem guid) RegisterPkId(val interface{}) string {
+	if val == nil || reflect.ValueOf(val).IsNil() || reflect.ValueOf(val).IsZero() {
+		return ""
+	}
+	if v, ok := val.(uuid.UUID); ok {
+		return v.String()
+	}
+	return val.(*uuid.UUID).String()
+}
+
+func (elem guid) Bind(field *structs.Field, val interface{}) error {
+	parseVal, err := uuid.FromString(cast.ToString(val))
+	if err == nil {
+		return field.Set(&parseVal)
+	}
+	return err
+}
+
+func (elem guid) Equal(x interface{}, y interface{}) bool {
 	if x == nil || y == nil {
 		return false
 	}
