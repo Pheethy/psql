@@ -186,6 +186,8 @@ func (zu ZeroUUID) MarshalBinary() ([]byte, error) {
 
 func (zu *ZeroUUID) UnmarshalText(text []byte) error {
 	switch len(text) {
+	case 16:
+		return zu.decodeBytes(text)
 	case 32:
 		return zu.decodeHashLike(text)
 	case 36:
@@ -193,6 +195,14 @@ func (zu *ZeroUUID) UnmarshalText(text []byte) error {
 	default:
 		return fmt.Errorf("uuid: incorrect UUID length %d in string %q", len(text), text)
 	}
+}
+
+func (zu *ZeroUUID) decodeBytes(t []byte) error {
+	if len(t) != 16 {
+		return fmt.Errorf("uuid: incorrect length for raw byte format: %d", len(t))
+	}
+	copy(zu[:], t)
+	return nil
 }
 
 // decodeHashLike decodes UUID strings that are using the following format:
