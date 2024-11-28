@@ -21,6 +21,31 @@ func NewGUIDWrapperFromString(s string) GUIDWrapper {
 	return GUIDWrapper{id}
 }
 
+func NewGUIDWrapper() GUIDWrapper {
+	id, _ := guid.NewV4()
+	return GUIDWrapper{id}
+}
+
+// สำหรับ JSON marshaling
+func (g GUIDWrapper) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + g.String() + `"`), nil
+}
+
+// สำหรับ JSON unmarshaling
+func (g *GUIDWrapper) UnmarshalJSON(data []byte) error {
+	// ตัด quotes ออก
+	s := string(data)
+	s = s[1 : len(s)-1]
+
+	parsed, err := guid.FromString(s)
+	if err != nil {
+		return err
+	}
+
+	g.GUID = parsed
+	return nil
+}
+
 // Implement Scanner interface for GUIDWrapper
 func (g *GUIDWrapper) Scan(value interface{}) error {
 	if value == nil {
