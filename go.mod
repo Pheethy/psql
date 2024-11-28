@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	4d63.com/tz v1.2.0
+	github.com/Microsoft/go-winio v0.6.2
 	github.com/Pheethy/sqlx v0.0.0-20231210055214-27a66acd90b2
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/structs v1.1.0
