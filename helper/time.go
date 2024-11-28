@@ -3,6 +3,7 @@ package helper
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 )
 
 const (
-	TimestampLayout = "2006-01-02 15:04:05" //2006-01-02 15:04:05, 2006-01-02T15:04:05
+	TimestampLayout = "2006-01-02 15:04:05" // 2006-01-02 15:04:05, 2006-01-02T15:04:05
 )
 
 type Timestamp time.Time
@@ -75,6 +76,7 @@ func (j Timestamp) YearDay() int {
 func (j Timestamp) String() string {
 	return j.Format(TimestampLayout)
 }
+
 func (j *Timestamp) Interface() interface{} {
 	if j == nil {
 		return nil
@@ -82,6 +84,7 @@ func (j *Timestamp) Interface() interface{} {
 
 	return j.Format(TimestampLayout)
 }
+
 func (j *Timestamp) GetBSON() (interface{}, error) {
 	if j == nil {
 		return nil, nil
@@ -98,6 +101,7 @@ func (j *Timestamp) GetBSON() (interface{}, error) {
 
 	return d, nil
 }
+
 func (j Timestamp) Value() (driver.Value, error) {
 	if j == (Timestamp{}) {
 		return nil, nil
@@ -116,3 +120,34 @@ func (j Timestamp) ValueOrZero() string {
 func (j Timestamp) ToTime() time.Time {
 	return time.Time(j)
 }
+
+func (t *Timestamp) Scan(value interface{}) error {
+	if value == nil {
+		*t = Timestamp(time.Time{})
+		return nil
+	}
+	switch v := value.(type) {
+	case time.Time:
+		*t = Timestamp(v)
+		return nil
+	case string:
+		loc, _ := tz.LoadLocation("Asia/Bangkok")
+		parsed, err := time.ParseInLocation(TimestampLayout, v, loc)
+		if err != nil {
+			return err
+		}
+		*t = Timestamp(parsed)
+		return nil
+	case []byte:
+		loc, _ := tz.LoadLocation("Asia/Bangkok")
+		parsed, err := time.ParseInLocation(TimestampLayout, string(v), loc)
+		if err != nil {
+			return err
+		}
+		*t = Timestamp(parsed)
+		return nil
+	default:
+		return fmt.Errorf("cannot scan type %T into Timestamp", value)
+	}
+}
+
