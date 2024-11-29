@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/gofrs/uuid"
 )
@@ -22,7 +23,7 @@ func ValidateKeyExists(keys []string, params map[string]interface{}) map[string]
 	if len(keys) == 0 || params == nil {
 		return nil
 	}
-	var errs = make(map[string]error, 0)
+	errs := make(map[string]error, 0)
 
 	for _, key := range keys {
 		if _, ok := params[key]; !ok {
@@ -95,6 +96,23 @@ func ValidateTypeUUID(val interface{}) error {
 		return errors.New("is not uuid")
 	}
 
+	return nil
+}
+
+func ValidateTimeISO8601(val interface{}) error {
+	if err := ValidateTypeString(val); err != nil {
+		return err
+	}
+
+	timeStr := val.(string)
+	if len(timeStr) != 19 {
+		return errors.New("invalid time format length")
+	}
+
+	_, err := time.Parse("2006-01-02 15:04:05", timeStr)
+	if err != nil {
+		return fmt.Errorf("invalid time format: %v", err)
+	}
 	return nil
 }
 
@@ -184,7 +202,7 @@ func reverseString(rawString string) string {
 	var reverseString string
 
 	for i := len([]rune(rawString)); i > 0; i-- {
-		var str = rawString[i-1]
+		str := rawString[i-1]
 		reverseString += string(str)
 	}
 
@@ -196,19 +214,19 @@ func ValidCitizenId(citizen string) bool {
 		return false
 	}
 
-	var revString = reverseString(citizen)
+	revString := reverseString(citizen)
 	var total float64
 	for index := 1; index < 13; index++ {
-		var mul = index + 1
-		var num, _ = strconv.Atoi(string([]rune(revString)[index]))
-		var count = num * mul
+		mul := index + 1
+		num, _ := strconv.Atoi(string([]rune(revString)[index]))
+		count := num * mul
 		total = total + float64(count)
 	}
-	var mod = int(total) % 11
-	var sub = 11 - mod
-	var checkDigit = sub % 10
+	mod := int(total) % 11
+	sub := 11 - mod
+	checkDigit := sub % 10
 
-	var lastCitizen, _ = strconv.Atoi(string([]rune(revString)[0]))
+	lastCitizen, _ := strconv.Atoi(string([]rune(revString)[0]))
 	if lastCitizen == checkDigit {
 		return true
 	}
@@ -221,7 +239,7 @@ func IsCompany(citizen string) bool {
 		return false
 	}
 
-	var num, err = strconv.Atoi(string([]rune(citizen)[0]))
+	num, err := strconv.Atoi(string([]rune(citizen)[0]))
 	if err != nil {
 		return false
 	}
