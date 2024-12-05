@@ -83,35 +83,32 @@ func (elem uid) Equal(x interface{}, y interface{}) bool {
 |
 ----------------------------------------
 */
-type guid uuid.UUID
+type guid helper.GUIDWrapper
 
 func (elem guid) TypeName() string {
-	return "uniqueidentifier"
+	return "guid"
 }
 
 func (elem guid) RegisterPkId(val interface{}) string {
 	if val == nil || reflect.ValueOf(val).IsNil() || reflect.ValueOf(val).IsZero() {
 		return ""
 	}
-	if v, ok := val.(uuid.UUID); ok {
+	if v, ok := val.(helper.GUIDWrapper); ok {
 		return v.String()
 	}
-	return val.(*uuid.UUID).String()
+	return val.(*helper.GUIDWrapper).String()
 }
 
 func (elem guid) Bind(field *structs.Field, val interface{}) error {
-	parseVal, err := uuid.FromString(cast.ToString(val))
-	if err == nil {
-		return field.Set(&parseVal)
-	}
-	return err
+	parseVal := helper.NewGUIDWrapperFromString(cast.ToString(val))
+	return field.Set(parseVal)
 }
 
 func (elem guid) Equal(x interface{}, y interface{}) bool {
 	if x == nil || y == nil {
 		return false
 	}
-	return x.(*uuid.UUID).String() == y.(*uuid.UUID).String()
+	return x.(*helper.GUIDWrapper).String() == y.(*helper.GUIDWrapper).String()
 }
 
 /*
@@ -193,6 +190,7 @@ func (elem str) Bind(field *structs.Field, val interface{}) error {
 	}
 	return nil
 }
+
 func (elem str) Equal(x interface{}, y interface{}) bool {
 	if x.(string) == "" || y.(string) == "" {
 		return false
@@ -224,6 +222,7 @@ func (elem integer) Bind(field *structs.Field, val interface{}) error {
 
 	return field.Set(cast.ToInt(cast.ToString(val)))
 }
+
 func (elem integer) Equal(x interface{}, y interface{}) bool {
 	if cast.ToInt(cast.ToString(x)) == 0 || cast.ToInt(cast.ToString(y)) == 0 {
 		return false
@@ -255,6 +254,7 @@ func (elem integer64) Bind(field *structs.Field, val interface{}) error {
 
 	return field.Set(cast.ToInt64(cast.ToString(val)))
 }
+
 func (elem integer64) Equal(x interface{}, y interface{}) bool {
 	if cast.ToInt64(cast.ToString(x)) == 0 || cast.ToInt64(cast.ToString(y)) == 0 {
 		return false
@@ -286,6 +286,7 @@ func (elem floater32) Bind(field *structs.Field, val interface{}) error {
 
 	return field.Set(cast.ToFloat32(cast.ToString(val)))
 }
+
 func (elem floater32) Equal(x interface{}, y interface{}) bool {
 	if cast.ToFloat32(cast.ToString(x)) == 0 || cast.ToFloat32(cast.ToString(y)) == 0 {
 		return false
@@ -317,6 +318,7 @@ func (elem floater64) Bind(field *structs.Field, val interface{}) error {
 
 	return field.Set(cast.ToFloat64(cast.ToString(val)))
 }
+
 func (elem floater64) Equal(x interface{}, y interface{}) bool {
 	if cast.ToFloat64(cast.ToString(x)) == 0 || cast.ToFloat64(cast.ToString(y)) == 0 {
 		return false
